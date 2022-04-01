@@ -1,0 +1,45 @@
+{
+  "name": "peibin/laravel-http-client",
+  "description": "Peibin http client component for Laravel.",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "laravel",
+    "annotation"
+  ],
+  "authors": [
+    {
+      "name": "Peibin Zhu",
+      "email": "zhupeibin1207@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.0",
+    "laravel/framework": "^9.2",
+    "guzzlehttp/guzzle": "^6.0|^7.0",
+    "peibin/laravel-di": "^1.0",
+    "peibin/laravel-utils": "^1.1",
+    "php-di/phpdoc-reader": "^2.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "PeibinLaravel\\HttpClient\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PeibinLaravelTest\\HttpClient\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "PeibinLaravel\\HttpClient\\ClientServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "prefer-stable": true
+}
