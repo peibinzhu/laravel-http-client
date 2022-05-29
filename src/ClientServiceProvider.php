@@ -8,7 +8,7 @@ use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use InvalidArgumentException;
 use PeibinLaravel\Di\Annotation\AnnotationCollector;
-use PeibinLaravel\Di\Annotation\ReflectionManager;
+use PeibinLaravel\Di\ReflectionManager;
 use PeibinLaravel\HttpClient\Annotation\Service;
 use PeibinLaravel\HttpClient\Annotation\ServiceGroup;
 
