@@ -41,7 +41,7 @@ class ProxyFactory
             return (string)self::get($serviceClass);
         }
 
-        $dir = storage_path('app/proxy/');
+        $dir = base_path('runtime/container/proxy/');
         if (!file_exists($dir)) {
             mkdir($dir, 0755, true);
         }
