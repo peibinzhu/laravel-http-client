@@ -27,21 +27,20 @@ class ClientServiceProvider extends ServiceProvider
             $annotationData = $this->collectAnnotationData(AnnotationCollector::list());
             $serviceFactory = $this->app->make(ProxyFactory::class);
 
-            foreach ($consumers as $group => $consumerItems) {
-                foreach ($annotationData[$group] ?? [] as $serviceClass => $methodData) {
+            foreach ($consumers as $serviceName => $consumerItems) {
+                foreach ($annotationData[$serviceName] ?? [] as $serviceClass => $methodData) {
                     if (!interface_exists($serviceClass)) {
                         continue;
                     }
 
-                    $option = $consumerItems;
                     $proxyClass = $serviceFactory->createProxy($serviceClass);
                     $app->bind(
                         $serviceClass,
-                        function () use ($proxyClass, $methodData, $option) {
+                        function () use ($proxyClass, $serviceName, $methodData) {
                             return new $proxyClass(
                                 fn () => Container::getInstance(),
-                                $methodData,
-                                $option
+                                $serviceName,
+                                $methodData
                             );
                         }
                     );

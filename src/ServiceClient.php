@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeibinLaravel\HttpClient;
 
 use GuzzleHttp\RequestOptions;
+use Illuminate\Config\Repository;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -22,21 +23,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class ServiceClient
 {
-    /**
-     * @var array
-     */
-    private $methodData;
-
-    /**
-     * @var array
-     */
-    private $options;
-
-    /**
-     * @var Container
-     */
-    private $container;
-
     /**
      * @var Client
      */
@@ -74,18 +60,17 @@ class ServiceClient
 
     /**
      * @param Container $container
+     * @param string    $serviceName
      * @param array     $methodData
-     * @param array     $options
      * @throws BindingResolutionException
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __construct(Container $container, array $methodData = [], array $options = [])
-    {
-        $this->container = $container;
-        $this->methodData = $methodData;
-        $this->options = $options;
-
+    public function __construct(
+        protected Container $container,
+        protected string $serviceName,
+        protected array $methodData = []
+    ) {
         /** @var Client $client */
         $client = $this->container->make(Client::class);
         $this->dataPacker = $this->container->make(JsonPacker::class);
@@ -99,6 +84,12 @@ class ServiceClient
         $this->eventDispatcher = $this->container->get(Dispatcher::class);
     }
 
+    protected function getConsumerConfig(): array
+    {
+        $key = sprintf('services.consumers.%s', $this->serviceName);
+        return $this->container->make(Repository::class)->get($key, []);
+    }
+
     protected function __request(string $method, array $params, ?string $id = null): mixed
     {
         if (!$id) {
@@ -108,17 +99,19 @@ class ServiceClient
         /** @var Service $methodMetadata */
         $methodMetadata = $this->methodData[$method];
 
-        $headers = $this->options['settings'][RequestOptions::HEADERS] ?? [];
+        $options = $this->getConsumerConfig();
 
-        $timeout = $this->options['settings'][RequestOptions::TIMEOUT] ?? 1.5;
+        $headers = $options['settings'][RequestOptions::HEADERS] ?? [];
+
+        $timeout = $options['settings'][RequestOptions::TIMEOUT] ?? 1.5;
         $timeout = $methodMetadata->timeout ?: $timeout;
 
-        $host = $this->options['host'];
+        $host = $options['host'];
         $uri = '/' . ltrim($methodMetadata->uri, '/');
         $data = $this->dataFormatter->formatRequest([$params, $id]);
 
         $method = $methodMetadata->method;
-        $contentType = $this->options['settings']['content_type'] ?? $method;
+        $contentType = $options['settings']['content_type'] ?? $method;
 
         $request = $this
             ->requestGenerator

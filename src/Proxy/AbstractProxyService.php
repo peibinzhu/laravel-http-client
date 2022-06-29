@@ -13,13 +13,13 @@ abstract class AbstractProxyService
      */
     protected $client;
 
-    public function __construct(\Closure $callback, array $methodData = [], array $options = [])
+    public function __construct(\Closure $callback, string $serviceName, array $methodData = [])
     {
         $container = $callback();
         $this->client = $container->make(ServiceClient::class, [
-            'container'  => $container,
-            'methodData' => $methodData,
-            'options'    => $options,
+            'container'   => $container,
+            'serviceName' => $serviceName,
+            'methodData'  => $methodData,
         ]);
     }
 }
