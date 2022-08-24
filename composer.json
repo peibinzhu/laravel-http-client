@@ -15,7 +15,7 @@
   ],
   "require": {
     "php": ">=8.0",
-    "laravel/framework": "^9.2",
+    "laravel/octane": "^1.2",
     "guzzlehttp/guzzle": "^6.0|^7.0",
     "peibin/laravel-di": "^1.1",
     "peibin/laravel-utils": "^1.1",

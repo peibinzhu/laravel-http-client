@@ -8,6 +8,8 @@ use GuzzleHttp\RequestOptions;
 
 class RequestBuilder
 {
+    private ?string $id;
+
     private $url;
 
     private $data;
@@ -18,7 +20,18 @@ class RequestBuilder
         RequestOptions::TIMEOUT => 5,
     ];
 
-    public function setHeader(array|string $key, string $value = null): self
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function setHeader(array | string $key, string $value = null): self
     {
         $headers = $this->options[RequestOptions::HEADERS] ?? [];
         if (is_array($key)) {
@@ -48,7 +61,7 @@ class RequestBuilder
         return $this;
     }
 
-    public function setTimeout(int|float $timeout): self
+    public function setTimeout(int | float $timeout): self
     {
         $this->options[RequestOptions::TIMEOUT] = $timeout;
         return $this;
@@ -91,7 +104,7 @@ class RequestBuilder
         return $this;
     }
 
-    public function setOption(array|string $key, string $value = null): self
+    public function setOption(array | string $key, string $value = null): self
     {
         if (is_array($key)) {
             $this->options = array_merge($this->options, $key);

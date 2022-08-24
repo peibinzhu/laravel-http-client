@@ -10,13 +10,11 @@ class DataFormatter implements DataFormatterContract
 {
     public function formatRequest($data)
     {
-        [$params, $id] = $data;
-        $params = is_array($params) ? $params : [];
-
+        $params = is_array($data) ? $data : [];
         if ($params) {
             $params = count($params) > 1 ? ['params' => $params] : $params[0];
         }
-        return array_merge($params, ['_id' => $id]);
+        return $params;
     }
 
     public function formatResponse($data): array

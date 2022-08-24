@@ -108,13 +108,14 @@ class ServiceClient
 
         $host = $options['host'];
         $uri = '/' . ltrim($methodMetadata->uri, '/');
-        $data = $this->dataFormatter->formatRequest([$params, $id]);
+        $data = $this->dataFormatter->formatRequest($params);
 
         $method = $methodMetadata->method;
         $contentType = $options['settings']['content_type'] ?? $method;
 
         $request = $this
             ->requestGenerator
+            ->setId($id)
             ->setHeader($headers)
             ->setUrl($host, $uri)
             ->setMethod($method)
