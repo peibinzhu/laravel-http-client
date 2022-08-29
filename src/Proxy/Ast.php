@@ -1,14 +1,7 @@
 <?php
 
 declare(strict_types=1);
-/**
- * This file is part of Hyperf.
- *
- * @link     https://www.hyperf.io
- * @document https://hyperf.wiki
- * @contact  group@hyperf.io
- * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
- */
+
 namespace PeibinLaravel\HttpClient\Proxy;
 
 use PhpParser\NodeTraverser;
@@ -48,7 +41,7 @@ class Ast
             throw new \InvalidArgumentException("'{$className}' should be an interface name");
         }
 
-        if (strpos($proxyClassName, '\\') !== false) {
+        if (str_contains($proxyClassName, '\\')) {
             $exploded = explode('\\', $proxyClassName);
             $proxyClassName = end($exploded);
         }

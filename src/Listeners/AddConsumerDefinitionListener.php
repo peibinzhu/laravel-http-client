@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeibinLaravel\HttpClient\Listeners;
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Config\Repository;
 use InvalidArgumentException;
 use PeibinLaravel\Di\Annotation\AnnotationCollector;
 use PeibinLaravel\Di\ReflectionManager;
@@ -21,10 +22,10 @@ class AddConsumerDefinitionListener
     public function handle(object $event): void
     {
         $container = $this->container;
-        $consumers = config('services.consumers', []);
+        $consumers = $container->get(Repository::class)->get('services.consumers', []);
         if ($consumers) {
             $annotationData = $this->collectAnnotationData(AnnotationCollector::list());
-            $serviceFactory = $container->make(ProxyFactory::class);
+            $serviceFactory = $container->get(ProxyFactory::class);
 
             foreach ($consumers as $serviceName => $consumerItems) {
                 foreach ($annotationData[$serviceName] ?? [] as $serviceClass => $methodData) {
@@ -37,7 +38,7 @@ class AddConsumerDefinitionListener
                         $serviceClass,
                         function () use ($proxyClass, $serviceName, $methodData) {
                             return new $proxyClass(
-                                fn() => Container::getInstance(),
+                                fn () => Container::getInstance(),
                                 $serviceName,
                                 $methodData
                             );

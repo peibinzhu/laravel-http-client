@@ -15,10 +15,10 @@
   ],
   "require": {
     "php": ">=8.0",
-    "laravel/octane": "^1.2",
     "guzzlehttp/guzzle": "^6.0|^7.0",
-    "peibin/laravel-di": "^1.1",
-    "peibin/laravel-utils": "^1.1",
+    "peibin/laravel-di": "^1.5",
+    "peibin/laravel-swoole-event": "^1.0",
+    "peibin/laravel-utils": "^1.6",
     "php-di/phpdoc-reader": "^2.2"
   },
   "autoload": {
