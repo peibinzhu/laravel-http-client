@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace PeibinLaravel\HttpClient;
 
-use Illuminate\Console\Events\ArtisanStarting;
 use Illuminate\Support\ServiceProvider;
 use PeibinLaravel\HttpClient\Listeners\AddConsumerDefinitionListener;
-use PeibinLaravel\SwooleEvent\Events\BeforeMainServerStart;
-use PeibinLaravel\SwooleEvent\Events\BeforeWorkerStart;
+use PeibinLaravel\SwooleEvent\Events\BootApplication;
 use PeibinLaravel\Utils\Providers\RegisterProviderConfig;
 
 class ClientServiceProvider extends ServiceProvider
@@ -19,9 +17,7 @@ class ClientServiceProvider extends ServiceProvider
     {
         return [
             'listeners' => [
-                ArtisanStarting::class       => AddConsumerDefinitionListener::class,
-                BeforeMainServerStart::class => AddConsumerDefinitionListener::class,
-                BeforeWorkerStart::class     => AddConsumerDefinitionListener::class,
+                BootApplication::class => AddConsumerDefinitionListener::class,
             ],
         ];
     }
