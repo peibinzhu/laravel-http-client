@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeibinLaravel\HttpClient\Proxy;
 
+use Illuminate\Contracts\Container\Container;
 use PeibinLaravel\HttpClient\ServiceClient;
 
 abstract class AbstractProxyService
@@ -13,9 +14,8 @@ abstract class AbstractProxyService
      */
     protected $client;
 
-    public function __construct(\Closure $callback, string $serviceName, array $methodData = [])
+    public function __construct(Container $container, string $serviceName, array $methodData = [])
     {
-        $container = $callback();
         $this->client = $container->make(ServiceClient::class, [
             'container'   => $container,
             'serviceName' => $serviceName,

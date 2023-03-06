@@ -34,11 +34,11 @@ class AddConsumerDefinitionListener
                     }
 
                     $proxyClass = $serviceFactory->createProxy($serviceClass);
-                    $container->bind(
+                    $container->singleton(
                         $serviceClass,
-                        function () use ($proxyClass, $serviceName, $methodData) {
+                        function ($container) use ($proxyClass, $serviceName, $methodData) {
                             return new $proxyClass(
-                                fn () => Container::getInstance(),
+                                $container,
                                 $serviceName,
                                 $methodData
                             );

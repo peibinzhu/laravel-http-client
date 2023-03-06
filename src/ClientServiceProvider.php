@@ -6,13 +6,11 @@ namespace PeibinLaravel\HttpClient;
 
 use Illuminate\Support\ServiceProvider;
 use PeibinLaravel\HttpClient\Listeners\AddConsumerDefinitionListener;
+use PeibinLaravel\ProviderConfig\Contracts\ProviderConfigInterface;
 use PeibinLaravel\SwooleEvent\Events\BootApplication;
-use PeibinLaravel\Utils\Providers\RegisterProviderConfig;
 
-class ClientServiceProvider extends ServiceProvider
+class ClientServiceProvider extends ServiceProvider implements ProviderConfigInterface
 {
-    use RegisterProviderConfig;
-
     public function __invoke(): array
     {
         return [
