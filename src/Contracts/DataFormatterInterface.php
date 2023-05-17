@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeibinLaravel\HttpClient\Contracts;
 
-interface DataFormatter
+interface DataFormatterInterface
 {
     /**
      * @param array $data [$params, $id]

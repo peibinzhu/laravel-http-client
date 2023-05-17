@@ -13,10 +13,7 @@ use Throwable;
 
 class Client
 {
-    /**
-     * @var ResponseBuilder
-     */
-    private $packer;
+    private ?ResponseBuilder $packer = null;
 
     public function send(RequestBuilder $request): ResponseBuilder
     {

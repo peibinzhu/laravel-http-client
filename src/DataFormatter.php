@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeibinLaravel\HttpClient\Utils;
+namespace PeibinLaravel\HttpClient;
 
-use PeibinLaravel\HttpClient\Contracts\DataFormatter as DataFormatterContract;
+use PeibinLaravel\HttpClient\Contracts\DataFormatterInterface;
 
-class DataFormatter implements DataFormatterContract
+class DataFormatter implements DataFormatterInterface
 {
     public function formatRequest($data)
     {

@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PeibinLaravel\HttpClient\Exception;
+namespace PeibinLaravel\HttpClient\Exceptions;
 
 use PeibinLaravel\HttpClient\Utils\ResponseBuilder;
+use RuntimeException;
 
-class RequestException extends \Exception
+class RequestException extends RuntimeException
 {
     /**
      * @var ResponseBuilder

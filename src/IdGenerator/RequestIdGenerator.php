@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeibinLaravel\HttpClient\Utils;
+namespace PeibinLaravel\HttpClient\IdGenerator;
 
-use PeibinLaravel\HttpClient\Contracts\IdGenerator as IdGeneratorContract;
+use PeibinLaravel\Contracts\IdGeneratorInterface;
 
-class IdGenerator implements IdGeneratorContract
+class RequestIdGenerator implements IdGeneratorInterface
 {
     public function generate(): string
     {

@@ -4,29 +4,21 @@ declare(strict_types=1);
 
 namespace PeibinLaravel\HttpClient;
 
+use PeibinLaravel\Coroutine\Locker;
+use PeibinLaravel\Coroutine\Traits\Container;
 use PeibinLaravel\HttpClient\Proxy\Ast;
 use PeibinLaravel\HttpClient\Proxy\CodeLoader;
 use PeibinLaravel\HttpClient\Utils\Filesystem;
-use PeibinLaravel\Utils\Traits\Container;
 
 class ProxyFactory
 {
     use Container;
 
-    /**
-     * @var Ast
-     */
-    protected $ast;
+    protected Ast $ast;
 
-    /**
-     * @var CodeLoader
-     */
-    protected $codeLoader;
+    protected CodeLoader $codeLoader;
 
-    /**
-     * @var Filesystem
-     */
-    protected $filesystem;
+    protected Filesystem $filesystem;
 
     public function __construct()
     {
@@ -47,14 +39,16 @@ class ProxyFactory
         }
 
         $proxyFileName = str_replace('\\', '_', $serviceClass);
-        $proxyClassName = $serviceClass . '_' . md5($this->codeLoader->getCodeByClassName($serviceClass));
+        $proxyClassName = $serviceClass . '_' . $this->codeLoader->getMd5ByClassName($serviceClass);
         $path = $dir . $proxyFileName . '.http-client.proxy.php';
         $key = md5($path);
-        if ($this->isModified($serviceClass, $path)) {
+        // If the proxy file does not exist, then try to acquire the coroutine lock.
+        if ($this->isModified($serviceClass, $path) && Locker::lock($key)) {
             $targetPath = $path . '.' . uniqid();
             $code = $this->ast->proxy($serviceClass, $proxyClassName);
             file_put_contents($targetPath, $code);
             rename($targetPath, $path);
+            Locker::unlock($key);
         }
 
         include_once $path;

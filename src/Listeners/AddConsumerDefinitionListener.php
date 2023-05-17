@@ -27,12 +27,14 @@ class AddConsumerDefinitionListener
             $annotationData = $this->collectAnnotationData(AnnotationCollector::list());
             $serviceFactory = $container->get(ProxyFactory::class);
 
+            $warmServices = [];
             foreach ($consumers as $serviceName => $consumerItems) {
                 foreach ($annotationData[$serviceName] ?? [] as $serviceClass => $methodData) {
                     if (!interface_exists($serviceClass)) {
                         continue;
                     }
 
+                    $warmServices[] = $serviceClass;
                     $proxyClass = $serviceFactory->createProxy($serviceClass);
                     $container->singleton(
                         $serviceClass,
@@ -45,6 +47,11 @@ class AddConsumerDefinitionListener
                         }
                     );
                 }
+            }
+
+            // The bindings listed below will be preloaded, avoiding repeated instantiation.
+            foreach ($warmServices as $abstract) {
+                $container->get($abstract);
             }
         }
     }
