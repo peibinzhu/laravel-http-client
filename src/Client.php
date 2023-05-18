@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace PeibinLaravel\HttpClient;
 
-use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\TransferStats;
 use InvalidArgumentException;
+use PeibinLaravel\Guzzle\ClientFactory;
 use PeibinLaravel\HttpClient\Utils\RequestBuilder;
 use PeibinLaravel\HttpClient\Utils\ResponseBuilder;
 use Throwable;
@@ -14,6 +15,10 @@ use Throwable;
 class Client
 {
     private ?ResponseBuilder $packer = null;
+
+    public function __construct(protected ClientFactory $clientFactory)
+    {
+    }
 
     public function send(RequestBuilder $request): ResponseBuilder
     {
@@ -32,8 +37,7 @@ class Client
         ]);
 
         try {
-            $client = new HttpClient();
-            $response = $client->request(
+            $response = $this->getClient()->request(
                 $request->getMethod(),
                 $request->getUrl(),
                 $request->getOptions(),
@@ -54,5 +58,10 @@ class Client
     {
         $this->packer = $packer;
         return $this;
+    }
+
+    private function getClient(): GuzzleHttpClient
+    {
+        return $this->clientFactory->create();
     }
 }

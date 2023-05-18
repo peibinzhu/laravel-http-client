@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeibinLaravel\HttpClient\Listeners;
 
-use Illuminate\Container\Container;
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Container\Container;
 use InvalidArgumentException;
 use PeibinLaravel\Di\Annotation\AnnotationCollector;
 use PeibinLaravel\Di\ReflectionManager;

@@ -16,11 +16,11 @@
   ],
   "require": {
     "php": ">=8.0",
-    "guzzlehttp/guzzle": "^6.0|^7.0",
     "peibin/laravel-code-parser": "^1.0",
     "peibin/laravel-codec": "^1.0",
     "peibin/laravel-contracts": "^1.0",
     "peibin/laravel-di": "^2.0",
+    "peibin/laravel-guzzle": "^1.0",
     "peibin/laravel-support": "^1.0",
     "peibin/laravel-swoole-event": "^1.0",
     "php-di/phpdoc-reader": "^2.2"
