@@ -69,6 +69,10 @@ class RequestBuilder
 
     public function setData($data, string $type = RequestOptions::QUERY): self
     {
+        if (strtoupper($this->method) == 'GET') {
+            $type = 'get';
+        }
+
         match (strtolower($type)) {
             RequestOptions::QUERY, 'get' => $this->setQueryData($data),
             RequestOptions::FORM_PARAMS, 'post' => $this->setFormData($data),
